@@ -1,3 +1,11 @@
+database
+.deepeval
+log.txt
+ipython_checkpoints
+.DS_Store
+node_modules
+/dist
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
