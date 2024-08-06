@@ -64,11 +64,6 @@ cp .env.example .env
        client_secret: your_adobe_client_secret
     ``` 
 
-2. Frontend configuration
-   - Update `yourAdobeClientId` with your Adobe client ID in `frontend/src/service/service.js`
-     - You can get Adobe client ID [here](https://developer.adobe.com/document-services/docs/overview/pdf-embed-api/) (notice: you can set domain to localhost for testing)
-     - **TODO**: replace Adobe PDF viewer with other open-source alternatives
-
 ## Usage
 
 ### Preprocess documents
