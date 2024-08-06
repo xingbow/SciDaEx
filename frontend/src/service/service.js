@@ -3,7 +3,6 @@ const GET_REQUEST = 'get'
 const POST_REQUEST = 'post'
 const backendPort = 5010
 const dataServerUrl = `http://127.0.0.1:${backendPort}/api`
-const yourAdobeClientId = "please enter your own adobe client id"
 const loginpassword = "llm2024!"
 const alertTh = .25
 
@@ -94,7 +93,6 @@ function getRelevanceScore(params, callback) {
 
 export default {
     getFiles,
-    yourAdobeClientId,
     loginpassword,
     alertTh,
     dataServerUrl,

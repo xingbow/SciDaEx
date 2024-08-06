@@ -24,7 +24,6 @@ import "../node_modules/tabulator-tables/dist/css/tabulator_semanticui.css"
 
 import "../node_modules/hint.css/hint.css"
 
-
 Vue.config.productionTip = false
 
 function mountApp() {

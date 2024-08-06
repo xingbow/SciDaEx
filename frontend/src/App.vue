@@ -96,7 +96,7 @@
           <!-- PDF viewer -->
           <el-col :span="12">
             <paper-viewer :activePDFName.sync="activePDFName" :paperInfoList="paperInfoList" :tableLists="tableLists"
-              :figLists="figLists" :metaInfo="metaInfo" />
+              :figLists="figLists" :metaInfo="metaInfo" :selectedFile="selectedFile"/>
           </el-col>
 
         </el-row>
@@ -170,7 +170,6 @@ export default {
       isTooltipVisible: false, // Controls the visibility of the tooltip
       activeModule: null,
       userinput: "",
-      yourAdobeClientId: service.yourAdobeClientId,
       adobeDCView: null,
       messages: [],
       loadingAIMessage: false,
@@ -387,7 +386,7 @@ export default {
     selectedFile(selectedFile) {
       console.log("selectedFile changed", this.pdfUrlPrefix + '/' + this.selectedFile.name);
       if (this.selectedFile != null) {
-        this.renderPDFbySelectedFile(selectedFile);
+        // this.renderPDFbySelectedFile(selectedFile);
         // display PDF info.
         this.displayPDFTable(selectedFile.name);
         this.displayPDFFigure(selectedFile.name);
@@ -415,7 +414,6 @@ export default {
     },
     tableLists(tableLists) {
       // console.log("do nothing")
-
       this.$nextTick(() => {
         tableLists.map((t, i) => {
           new Tabulator("#tableLists-" + i, {
@@ -662,7 +660,7 @@ export default {
                   action: function (_e, row) {
                     let cell = row.getCells()[0];
                     _this.handleTableRightClickMenuOptions(cell);
-                    if(!_this.paperInfoList.includes("Table")){
+                    if (!_this.paperInfoList.includes("Table")) {
                       _this.paperInfoList.push("Table")
                     }
                     _this.activePDFName = "Table"
@@ -673,7 +671,7 @@ export default {
                   action: function (_e, row) {
                     let cell = row.getCells()[0];
                     _this.handleTableRightClickMenuOptions(cell);
-                    if(!_this.paperInfoList.includes("Figure")){
+                    if (!_this.paperInfoList.includes("Figure")) {
                       _this.paperInfoList.push("Figure")
                     }
                     _this.activePDFName = "Figure"
@@ -684,7 +682,7 @@ export default {
                   action: function (_e, row) {
                     let cell = row.getCells()[0];
                     _this.handleTableRightClickMenuOptions(cell);
-                    if(!_this.paperInfoList.includes("Meta")){
+                    if (!_this.paperInfoList.includes("Meta")) {
                       _this.paperInfoList.push("Meta")
                     }
                     _this.activePDFName = "Meta"
@@ -834,32 +832,6 @@ export default {
         }
 
       }
-    },
-    renderPDFbySelectedFile() {
-      let adobeDCView = this.adobeDCView;
-      if (adobeDCView == null) {
-        // eslint-disable-next-line
-        adobeDCView = new AdobeDC.View({ // eslint-disable-line 
-          clientId: this.yourAdobeClientId,
-          divId: "adobe-dc-view"
-        });
-      }
-      let previewConfig = {
-        enableAnnotationAPIs: true,
-        includePDFAnnotations: true,
-        // showDownloadPDF: false,
-      }
-      var reader = new FileReader();
-      reader.onloadend = (e) => {
-        var filePromise = Promise.resolve(e.target.result);
-        // Render PDF
-        adobeDCView.previewFile({
-          content: { promise: filePromise },
-          metaData: { fileName: this.selectedFile.name, id: "77c6fa5d-6d74-4104-8349-657c8411a834" }
-        }, previewConfig)
-      };
-      reader.readAsArrayBuffer(this.selectedFile);
-
     },
     handleFileChange(file) {
       console.log("file changed", file);
@@ -1043,21 +1015,21 @@ export default {
       // get the data from the row
       ////////////////////////////////////////
       let currTokens = [];
-Object.keys(row.getData()).map(
-  key => {
-    if (key != "pdf_file" && key != "processed") {
-      let val = row.getData()[key];
-      if (typeof val === 'string') {  // Ensure the value is a string before tokenizing
-        myTokenizer.tokenize(val).map((token) => {
-          if (token.tag != 'punctuation' && (removeStopwords([token.value]).length > 0) && (token.value.length >= 2)) {
-            currTokens.push(token.value);
+      Object.keys(row.getData()).map(
+        key => {
+          if (key != "pdf_file" && key != "processed") {
+            let val = row.getData()[key];
+            if (typeof val === 'string') {  // Ensure the value is a string before tokenizing
+              myTokenizer.tokenize(val).map((token) => {
+                if (token.tag != 'punctuation' && (removeStopwords([token.value]).length > 0) && (token.value.length >= 2)) {
+                  currTokens.push(token.value);
+                }
+              });
+            }
           }
         });
-      }
-    }
-  });
-this.currTokens = currTokens;
-console.log("current tokens for the clicked row: ", currTokens);
+      this.currTokens = currTokens;
+      console.log("current tokens for the clicked row: ", currTokens);
       ////////////////////////////////////////
     },
     updateUserColumnInput(text) {
