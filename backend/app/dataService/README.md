@@ -21,13 +21,13 @@ This folder contains the core data processing and extraction functionalities for
    ```yaml
    api_keys:
      openai: your_openai_key_here
-     langchain: your_langchain_key_here
 
    adobe_credentials:
      client_id: your_adobe_client_id_here
      client_secret: your_adobe_client_secret_here
     ```
    - Replace the placeholder values in `config.yml` with your actual API keys and credentials.
+      - [Adobe credentials](https://acrobatservices.adobe.com/dc-integration-creation-app-cdn/main.html?api=pdf-services-api)
 
 ## Usage
 

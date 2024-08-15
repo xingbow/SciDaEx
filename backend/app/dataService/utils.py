@@ -392,7 +392,7 @@ def extract_sentences_with_keywords(pdf_path, keyword_list, mode=0):
     pdf_reader = PyPDF2.PdfReader(pdf_file)
     # mode = 0: table, mode = 1: figure
     sentences_dict = {keyword: [] for keyword in keyword_list}
-    for page_num in range(pdf_reader.numPages):
+    for page_num in range(len(pdf_reader.pages)):
         page = pdf_reader.getPage(page_num)
         text = page.extract_text()
         text_sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z][a-z])|(?<=[.!?])\s+(?=[A-Z]{2,})', text)
@@ -876,7 +876,7 @@ def extract_pdf_table_llm_new(pdf_path, model_name, openai_api_key):
     pdf_reader = PyPDF2.PdfReader(pdf_file)
     # extract tables
     Table = []
-    for page_num in range(pdf_reader.numPages):
+    for page_num in range(len(pdf_reader.pages)):
         page = pdf_reader.getPage(page_num)
         text = page.extract_text()
         table = table_extract_chain.invoke({"page_content": text}).content

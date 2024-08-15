@@ -19,12 +19,11 @@ config = load_yaml_config(config_path)
 
 # Extract API keys and credentials from config
 openai_key = config['api_keys']['openai']
-langchain_key = config['api_keys']['langchain']
 adobe_credentials = config['adobe_credentials']
 adobe_client_id = adobe_credentials['client_id']
 adobe_client_secret = adobe_credentials['client_secret']
 
-if not all([openai_key, langchain_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
+if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
     raise Exception("One or more API keys or credentials cannot be found or loaded. Please check the config file.")
 
 # Directory paths

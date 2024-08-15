@@ -39,7 +39,7 @@ python -m venv venv
 source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 
 # Install backend dependencies (python 3.10)
-pip install -r requirements.txt
+pip install -r requirements.txt && pip install "pdfservices-sdk==2.3.0"
 
 # Install frontend dependencies
 cd frontend
