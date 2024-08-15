@@ -106,7 +106,7 @@ Contributors to the project (development version) are listed below (data as of 2
 </details>
 
 <details>
-  <summary><strong>Dylan Sheng</strong>: <a href="mailto:rshengac@connect.ust.hk">rshengac@connect.ust.hk</a></summary>
+  <summary><strong>Rui Sheng</strong>: <a href="mailto:rshengac@connect.ust.hk">rshengac@connect.ust.hk</a></summary>
   <ul>
     <li><strong>Total Commits</strong>: 14</li>
     <li><strong>Total Additions</strong>: 339</li>
