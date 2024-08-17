@@ -393,13 +393,10 @@ def extract_sentences_with_keywords(pdf_path, keyword_list, mode=0):
     # mode = 0: table, mode = 1: figure
     sentences_dict = {keyword: [] for keyword in keyword_list}
     for page_num in range(len(pdf_reader.pages)):
-        page = pdf_reader.getPage(page_num)
+        page = pdf_reader.pages[page_num]
+        # page = pdf_reader.getPage(page_num)
         text = page.extract_text()
         text_sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z][a-z])|(?<=[.!?])\s+(?=[A-Z]{2,})', text)
-        # print(text_sentences)
-        # for t in text_sentences:
-        #     print(t)
-        #     print('----------------------------------------\n')
         sentence_count = 0
         for sentence in text_sentences:
             for keyword in keyword_list:
@@ -877,7 +874,8 @@ def extract_pdf_table_llm_new(pdf_path, model_name, openai_api_key):
     # extract tables
     Table = []
     for page_num in range(len(pdf_reader.pages)):
-        page = pdf_reader.getPage(page_num)
+        page = pdf_reader.pages[page_num]
+        # page = pdf_reader.getPage(page_num)
         text = page.extract_text()
         table = table_extract_chain.invoke({"page_content": text}).content
         # print(f"page: {page_num}: {table}")
@@ -944,8 +942,9 @@ def extract_pdf_table_llm(pdf_path, model, openai_api_key):
     print("===table extraction===")
     # extract tables
     Table = []
-    for page_num in range(pdf_reader.numPages):
-        page = pdf_reader.getPage(page_num)
+    for page_num in range(len(pdf_reader.pages)):
+        page = pdf_reader.pages[page_num]
+        # page = pdf_reader.getPage(page_num)
         text = page.extract_text()
         # table = model.predict(table_extract_prompt.format(page_content=text))
         table = table_extract_chain.invoke({"page_content": text}).content
