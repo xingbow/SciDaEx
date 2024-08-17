@@ -706,7 +706,6 @@ export default {
                 {
                   label: "Add row",
                   action: function (_e, row){
-                    alert("add row: " + row.getPosition(true));
                     _this.qaTable.addRow({}, true , row);
                   }
                 }
