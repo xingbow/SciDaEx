@@ -96,7 +96,7 @@
           <!-- PDF viewer -->
           <el-col :span="12">
             <paper-viewer :activePDFName.sync="activePDFName" :paperInfoList="paperInfoList" :tableLists="tableLists"
-              :figLists="figLists" :metaInfo="metaInfo" :selectedFile="selectedFile"/>
+              :figLists="figLists" :metaInfo="metaInfo" :selectedFile="selectedFile" />
           </el-col>
 
         </el-row>
@@ -375,6 +375,21 @@ export default {
           autoColumns: true,
           columnDefaults: {
             maxWidth: 250, //maximum column width of 300px for all columns
+          },
+
+          autoColumnsDefinitions: function (definitions) {
+            definitions.forEach((column) => {
+              column.editor = true;
+              column.cellClick = function (e, cell) {
+                let filename = cell.getRow().getData().pdf_file;
+                let idx = _this.fileList.findIndex((file) => {
+                  return file.name == filename;
+                })
+                _this.selectedFile = _this.fileList[idx].raw;
+              }
+            });
+
+            return definitions;
           },
         });
         _this.fields = Object.keys(merged_dbData[0]).map(field => {
@@ -744,12 +759,13 @@ export default {
                   if (column.field != "pdf_file" && (!utils.isEmpty(column.field))) { // get columns except pdf_file and empty columns
                     // column.editor = true;
                     column.editor = "input";
-                    column.editable = false,
+                    column.editable = false;
 
-                      column.cellDblClick = function (e, cell) {
-                        // _this.handleTableRightClickMenuOptions(cell);
-                        cell.edit(true);
-                      }
+                    column.cellDblClick = function (e, cell) {
+                      // _this.handleTableRightClickMenuOptions(cell);
+                      cell.edit(true);
+                    }
+
                     column.editableTitle = true;
                     column.formatter = "textarea";
                     column.headerMenu = function () {
@@ -912,6 +928,13 @@ export default {
             // console.log("column", column);
             // column.headerFilter = true; // add header filter to every column
             column.editor = true;
+            column.cellClick = function (e, cell) {
+              let filename = cell.getValue();
+              let idx = _this.fileList.findIndex((file) => {
+                return file.name == filename;
+              })
+              _this.selectedFile = _this.fileList[idx].raw;
+            }
             // column.editableTitle = true;
             // column.headerWordWrap = true
           });

@@ -133,17 +133,19 @@ class DataService(object):
         #######################
         # decide the answer strcuture
         answer_structure_prompt = f"""
-        Given the following question, design a structured data format to represent the answer:
+        Given the following question, design a structured data format to represent ONLY the information explicitly requested:
 
         Question: {question}
 
         Your task:
-        1. Carefully analyze the question to identify ONLY the specific information explicitly requested. 
+        1. Carefully analyze the question to identify ONLY the specific information explicitly requested or clearly implied. 
         2. Design a table structure with columns that directly correspond to the requested information.
         3. Provide the structure in a "record" format: [{{"column_1": "value_description", "column_2": "value_description", ...}}]
         4. Ensure all dictionary objects in the list share the same set of columns.
         5. Use clear and descriptive names for the columns.
         6. Avoid nested structures or hierarchical data - keep everything flat.
+
+        IMPORTANT: Do NOT add any columns for information that is not specifically mentioned or clearly implied in the question. Stick ONLY to what is explicitly asked for.
 
         Guidelines:
         - Choose column names that are self-explanatory and follow a consistent naming convention.
