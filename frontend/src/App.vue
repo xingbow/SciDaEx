@@ -650,7 +650,7 @@ export default {
               autoColumns: true,
               rowContextMenu: [
                 {
-                  label: '<el-button type="primary">Open context</el-button>',
+                  label: 'Open context',
                   action: function (e, row) {
                     _this.handleOpenContext(e, row);
                     //  record user interactions
@@ -701,6 +701,13 @@ export default {
                       _this.paperInfoList.push("Meta")
                     }
                     _this.activePDFName = "Meta"
+                  }
+                },
+                {
+                  label: "Add row",
+                  action: function (_e, row){
+                    alert("add row: " + row.getPosition(true));
+                    _this.qaTable.addRow({}, true , row);
                   }
                 }
               ],
@@ -812,6 +819,12 @@ export default {
                                 formatter: "textarea"
                               }, true, column.field);
                             }
+                          }
+                        },
+                        {
+                          label: 'Delete this column',
+                          action: (e, column) => {
+                            column.delete();
                           }
                         }
                       ];
