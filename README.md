@@ -44,10 +44,6 @@ pip install -r requirements.txt && pip install "pdfservices-sdk==2.3.0"
 # Install frontend dependencies
 cd frontend
 npm install
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your API keys and configuration
 ```
 
 ### Configuration
