@@ -35,7 +35,7 @@ if not all([openai_key]):
 # Set directory paths with config values or defaults
 data_dir = config.get('data_dir', os.path.join(_current_dir, 'data'))
 meta_dir = config.get('meta_dir', os.path.join(data_dir, 'meta'))
-temp_dir = config.get('temp_dir', os.path.join(_current_dir, 'temp'))
+temp_dir = config.get('temp_dir', os.path.join(data_dir, 'temp'))
 table_dir = config.get('table_dir', os.path.join(data_dir, 'table'))
 figure_dir = config.get('figure_dir', os.path.join(data_dir, 'figure'))
 vectorstore_dir = config.get('vectorstore_dir', os.path.join(data_dir, 'vectorstore'))
