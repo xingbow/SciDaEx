@@ -435,6 +435,10 @@ if __name__ == "__main__":
     What the tasks and accuracy of different LMs?
     """
 
+    question = """
+    What are the eligibility criteria for the Sepsis trial study?
+    """
+
     #******************** running **********************
     time1 = time.time()
     # rag_summary, ans = dataService.run_rag_qa(pdf_files, question, batch_size = 15, evaluation_metrics=['faithfulness', 'answer_relevancy', 'contextual_relevancy'])
