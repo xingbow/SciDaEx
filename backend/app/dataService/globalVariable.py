@@ -15,15 +15,20 @@ config_path = os.path.join(_current_dir, 'config.yml')
 def load_yaml_config(config_path: str) -> Dict[str, Any]:
     with open(config_path, 'r') as config_file:
         return yaml.safe_load(config_file)
-config = load_yaml_config(config_path)
+
+if os.path.exists(config_path):
+    config = load_yaml_config(config_path)
+else:
+    config = {}
 
 # Extract API keys and credentials from config
-openai_key = config['openai_key']
-adobe_credentials = config['adobe_credentials']
-adobe_client_id = adobe_credentials['client_id']
-adobe_client_secret = adobe_credentials['client_secret']
+openai_key = config.get('openai_key', None)
+adobe_credentials = config.get('adobe_credentials', {})
+adobe_client_id = adobe_credentials.get('client_id', None)
+adobe_client_secret = adobe_credentials.get('client_secret', None)
 
-if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
+# if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
+if not all([openai_key]):
     raise Exception("One or more API keys or credentials cannot be found or loaded. Please check the config file.")
 
 # Directory paths

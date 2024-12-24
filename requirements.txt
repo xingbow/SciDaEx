@@ -20,3 +20,4 @@ tqdm==4.66.4
 matplotlib
 faiss-cpu
 unstructured[pdf]==0.11.0
+openpyxl
