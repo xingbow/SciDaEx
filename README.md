@@ -53,8 +53,7 @@ npm install
      - You can get adobe service api credentials [here](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/)
      - You can get openai api key [here](https://platform.openai.com/api-keys)
     ```yaml
-    api_keys:
-       openai: your_openai_api_key
+    openai_key: your_openai_api_key
 
     adobe_credentials:
        client_id: your_adobe_client_id

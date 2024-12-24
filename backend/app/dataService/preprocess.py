@@ -3,6 +3,7 @@ import pickle
 import json
 import time
 import re
+import yaml
 try:
     import globalVariable as GV
     import utils as utils
@@ -238,7 +239,7 @@ def preprocess_folder(pdf_dir, figure_dir, table_dir, meta_dir, table_model, fig
     # Create directories if they don't exist
     for directory in [figure_dir, table_dir, meta_dir, vectorstore_dir]:
         os.makedirs(directory, exist_ok=True)
-        
+    
     data_folder = pdf_dir
     table_folder = table_dir
     figure_folder = figure_dir
@@ -259,7 +260,7 @@ def preprocess_folder(pdf_dir, figure_dir, table_dir, meta_dir, table_model, fig
         # process tables
         utils.process_tables(data_folder, table_folder, table_model, openai_key)
     
-    # utils.process_meta_information(data_folder, meta_folder, meta_model, openai_key)
+    utils.process_meta_information(data_folder, meta_folder, meta_model, openai_key)
 
     # start to generate vector stores
     for filename in tqdm(os.listdir(data_folder)):
@@ -286,6 +287,7 @@ def preprocess_single_pdf(pdf_path, figure_dir, table_dir, meta_dir, table_model
     # Create directories if they don't exist
     for directory in [figure_dir, table_dir, meta_dir, vectorstore_dir]:
         os.makedirs(directory, exist_ok=True)
+    
     pdf_path = pdf_path
     table_folder = table_dir
     figure_folder = figure_dir
@@ -350,8 +352,36 @@ if __name__ == "__main__":
         mode = "fast"
     else:
         mode = "normal"
-
     # print(mode)
+
+    # add configration saving
+    config_path = "config.yml"
+    config = {
+        'data_dir': args.pdf_dir,
+        'figure_dir': args.figure_dir,
+        'table_dir': args.table_dir,
+        'meta_dir': args.meta_dir,
+        'table_model': args.table_model,
+        'figure_model': args.figure_model,
+        'meta_model': args.meta_model,
+        'mode': mode,
+        'openai_key': args.openai_key,
+        'vectorstore_dir': args.vectorstore_dir,
+        'flag': args.flag
+    }
+
+    # create or update the config file
+    try:
+        with open(config_path, 'r') as f:
+            existing_config = yaml.safe_load(f) or {}
+        existing_config.update(config)
+        config = existing_config
+    except FileNotFoundError:
+        pass
+
+    with open(config_path, 'w') as f:
+        yaml.dump(config, f, default_flow_style=False)
+    
     if args.pdf_path:
         preprocess_single_pdf(
             pdf_path=args.pdf_path,

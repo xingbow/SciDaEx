@@ -18,7 +18,7 @@ def load_yaml_config(config_path: str) -> Dict[str, Any]:
 config = load_yaml_config(config_path)
 
 # Extract API keys and credentials from config
-openai_key = config['api_keys']['openai']
+openai_key = config['openai_key']
 adobe_credentials = config['adobe_credentials']
 adobe_client_id = adobe_credentials['client_id']
 adobe_client_secret = adobe_credentials['client_secret']
@@ -27,12 +27,13 @@ if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
     raise Exception("One or more API keys or credentials cannot be found or loaded. Please check the config file.")
 
 # Directory paths
-data_dir = os.path.join(_current_dir, 'data')
-meta_dir = os.path.join(data_dir, 'meta')
-temp_dir = os.path.join(_current_dir, 'temp')
-table_dir = os.path.join(data_dir, 'table')
-figure_dir = os.path.join(data_dir, 'figure')
-vectorstore_dir = os.path.join(data_dir, 'vectorstore')
+# Set directory paths with config values or defaults
+data_dir = config.get('data_dir', os.path.join(_current_dir, 'data'))
+meta_dir = config.get('meta_dir', os.path.join(data_dir, 'meta'))
+temp_dir = config.get('temp_dir', os.path.join(_current_dir, 'temp'))
+table_dir = config.get('table_dir', os.path.join(data_dir, 'table'))
+figure_dir = config.get('figure_dir', os.path.join(data_dir, 'figure'))
+vectorstore_dir = config.get('vectorstore_dir', os.path.join(data_dir, 'vectorstore'))
 
 # Create directories if they don't exist
 for directory in [data_dir, meta_dir, temp_dir, table_dir, figure_dir, vectorstore_dir]:
