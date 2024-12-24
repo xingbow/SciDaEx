@@ -235,6 +235,10 @@ def process_one_pdf(pdf_path, table_path, figure_path, flag='all'):
     return all_text
 
 def preprocess_folder(pdf_dir, figure_dir, table_dir, meta_dir, table_model, figure_model, meta_model, mode, openai_key, vectorstore_dir, flag):
+    # Create directories if they don't exist
+    for directory in [figure_dir, table_dir, meta_dir, vectorstore_dir]:
+        os.makedirs(directory, exist_ok=True)
+        
     data_folder = pdf_dir
     table_folder = table_dir
     figure_folder = figure_dir
@@ -279,6 +283,9 @@ def preprocess_folder(pdf_dir, figure_dir, table_dir, meta_dir, table_model, fig
     print("Preprocessing done.")
 
 def preprocess_single_pdf(pdf_path, figure_dir, table_dir, meta_dir, table_model, figure_model, meta_model, mode, openai_key, vectorstore_dir, flag):
+    # Create directories if they don't exist
+    for directory in [figure_dir, table_dir, meta_dir, vectorstore_dir]:
+        os.makedirs(directory, exist_ok=True)
     pdf_path = pdf_path
     table_folder = table_dir
     figure_folder = figure_dir
