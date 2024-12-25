@@ -21,3 +21,4 @@ matplotlib
 faiss-cpu
 unstructured[pdf]==0.11.0
 openpyxl
+httpx==0.27.2

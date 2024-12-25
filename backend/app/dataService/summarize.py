@@ -33,7 +33,10 @@ def summarize_docs(docs, openai_key = GV.openai_key):
     3. Define a chain to collapse multiple summaries (reduce step).
     4. Apply the map-reduce process to generate the final summary.
     """
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125", temperature=0, openai_api_key = openai_key, model_kwargs={"seed": 42})
+    llm = ChatOpenAI(model="gpt-3.5-turbo-0125", 
+                     temperature=0, 
+                     api_key = openai_key, 
+                     model_kwargs={"seed": 42})
 
     # Define prompt and method for converting Document to string
     document_prompt = PromptTemplate.from_template("{page_content}")
