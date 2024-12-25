@@ -332,6 +332,27 @@ def preprocess_single_pdf(pdf_path, figure_dir, table_dir, meta_dir, table_model
         print(f"Failed to process {pdf_path}")
         print(f"Error: {e}")
 
+
+def update_global_vars(args):
+    """Update global variables with command line arguments"""
+    try:
+        import globalVariable as GV
+    except:
+        import app.dataService.globalVariable as GV
+    
+    # Create update dictionary with provided arguments
+    update_dict = {
+        'data_dir': args.pdf_dir,
+        'figure_dir': args.figure_dir,
+        'table_dir': args.table_dir,
+        'meta_dir': args.meta_dir,
+        'vectorstore_dir': args.vectorstore_dir,
+        'openai_key': args.openai_key
+    }
+
+    # Update global variables
+    GV.update_global_variables(**update_dict)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Preprocess PDF files.")
     parser.add_argument('--pdf_dir', type=str, required=False, help='Directory containing PDF files.', default=GV.data_dir)
@@ -353,6 +374,9 @@ if __name__ == "__main__":
     else:
         mode = "normal"
     # print(mode)
+
+    # Add after parsing arguments:
+    update_global_vars(args)
 
     # add configration saving
     config_path = "config.yml"

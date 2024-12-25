@@ -44,6 +44,26 @@ vectorstore_dir = config.get('vectorstore_dir', os.path.join(data_dir, 'vectorst
 for directory in [data_dir, meta_dir, temp_dir, table_dir, figure_dir, vectorstore_dir]:
     os.makedirs(directory, exist_ok=True)
 
+
+def update_global_variables(**kwargs):
+    """Update global variables with provided values"""
+    global data_dir, figure_dir, table_dir, meta_dir, vectorstore_dir, openai_key
+    
+    # Update each variable if provided in kwargs
+    if 'data_dir' in kwargs:
+        data_dir = kwargs['data_dir']
+        temp_dir = os.path.join(data_dir, 'temp')
+    if 'figure_dir' in kwargs:
+        figure_dir = kwargs['figure_dir']
+    if 'table_dir' in kwargs:
+        table_dir = kwargs['table_dir']
+    if 'meta_dir' in kwargs:
+        meta_dir = kwargs['meta_dir']
+    if 'vectorstore_dir' in kwargs:
+        vectorstore_dir = kwargs['vectorstore_dir']
+    if 'openai_key' in kwargs:
+        openai_key = kwargs['openai_key']
+
 # ##############################
 # prompts
 # ##############################
