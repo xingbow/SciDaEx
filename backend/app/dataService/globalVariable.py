@@ -55,12 +55,20 @@ def update_global_variables(**kwargs):
         temp_dir = os.path.join(data_dir, 'temp')
     if 'figure_dir' in kwargs:
         figure_dir = kwargs['figure_dir']
+    else:
+        figure_dir = os.path.join(data_dir, 'figure')
     if 'table_dir' in kwargs:
         table_dir = kwargs['table_dir']
+    else:
+        table_dir = os.path.join(data_dir, 'table')
     if 'meta_dir' in kwargs:
         meta_dir = kwargs['meta_dir']
+    else:
+        meta_dir = os.path.join(data_dir, 'meta')
     if 'vectorstore_dir' in kwargs:
         vectorstore_dir = kwargs['vectorstore_dir']
+    else:
+        vectorstore_dir = os.path.join(data_dir, 'vectorstore')
     if 'openai_key' in kwargs:
         openai_key = kwargs['openai_key']
 
