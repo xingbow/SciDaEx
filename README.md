@@ -28,6 +28,7 @@
     - [Preprocess Documents](#preprocess-documents)
     - [Running the Web Application](#running-the-web-application)
   - [👥 Contributors](#-contributors)
+    - [Project Timeline](#project-timeline)
   - [📚 Citation](#-citation)
 
 ## ✨ Features
@@ -99,7 +100,16 @@ For details, please refer to the [preprocessing documentation](backend/app/dataS
 3. Open your browser and navigate to `http://localhost:8080` to access the SciDaEx interface.
 
 ## 👥 Contributors
-Until 2024-08-06: The project has three contributors, with Xingbo Wang being the leading developer (63 commits, +20,575 lines, wangxbzb@gmail.com), followed by Rui Sheng (14 commits, +166 lines, rshengac@connect.ust.hk) and Winston Tsui (2 commits, +106 lines, wt285@cornell.edu). 
+
+### Project Timeline
+
+| Period | Role | Contributor | Details |
+|--------|------|-------------|---------|
+| 2024-08-06 to present | Project Maintainer | [Xingbo Wang](mailto:wangxbzb@gmail.com) | - |
+| Until 2024-08-06 | Lead Developer | [Xingbo Wang](mailto:wangxbzb@gmail.com) | 63 commits, +20,575 lines |
+| Until 2024-08-06 | Contributor | [Rui Sheng](mailto:rshengac@connect.ust.hk) | 14 commits, +166 lines |
+| Until 2024-08-06 | Contributor | [Winston Tsui](mailto:wt285@cornell.edu) | 2 commits, +106 lines |
+
 
 ## 📚 Citation
 If you use the repository, please cite the following paper:
