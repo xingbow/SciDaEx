@@ -1,33 +1,44 @@
 # SciDaEx: Scientific Data Extraction and Structuring System
 
-![SciDaEx Logo](scidaex_system.png)
+<div align="center">
+  <img src="scidaex_system.png" alt="SciDaEx Logo"/>
+  
+  [![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
+  [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+  [![arXiv](https://img.shields.io/badge/arXiv-2404.13765-b31b1b.svg)](https://arxiv.org/abs/2404.13765)
+</div>
 
-SciDaEx is a open-source system for extracting and structuring data (as data tables) from scientific literature using Large Language Models (LLMs). It integrates a computational backend with an interactive user interface to facilitate efficient data extraction, structuring, and refinement for evidence synthesis in scientific research.
+> An open-source system for extracting and structuring data from scientific literature using Large Language Models (LLMs). It integrates a computational backend with an interactive user interface to facilitate efficient data extraction, structuring, and refinement for evidence synthesis in scientific research.
 
-## Table of Contents
+> **Note:** This repository contains two main branches:
+> - `main`: The latest version optimized for customization and extension
+> - `scidasynth`: The original version as described in our research paper
 
+## 📞 Contact
+**Xingbo Wang** - [Website](https://andy-xingbowang.com/) | [Email](mailto:wangxbzb@gmail.com)
+
+## 📋 Table of Contents
 - [SciDaEx: Scientific Data Extraction and Structuring System](#scidaex-scientific-data-extraction-and-structuring-system)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Installation](#installation)
+  - [📞 Contact](#-contact)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
+  - [🚀 Installation](#-installation)
     - [Configuration](#configuration)
-  - [Usage](#usage)
-    - [Preprocess documents](#preprocess-documents)
-    - [Running the web application](#running-the-web-application)
-  - [Contributors](#contributors)
-  - [Contact](#contact)
+  - [💻 Usage](#-usage)
+    - [Preprocess Documents](#preprocess-documents)
+    - [Running the Web Application](#running-the-web-application)
+  - [👥 Contributors](#-contributors)
+  - [📚 Citation](#-citation)
 
-## Features
+## ✨ Features
+- 🔍 Automated data extraction from scientific papers (text, tables, and figures)
+- 📊 Structured data table output in standardized formats
+- 🖥️ Interactive user interface for data validation and refinement
+- 🚀 Retrieval-augmented generation (RAG) for enhanced accuracy and speed
+- 📈 Quality evaluation metrics for extracted data
+- 👥 Support for both technical and non-technical users
 
-- Automated data extraction from scientific papers (text, tables, and figures)
-- Structured data table output in standardized formats
-- Interactive user interface for data validation and refinement
-- Retrieval-augmented generation (RAG) for enhanced accuracy and speed
-- Quality evaluation metrics for extracted data
-- Support for both technical and non-technical users
-
-
-## Installation
+## 🚀 Installation
 
 ```bash
 # Clone the repository
@@ -50,8 +61,8 @@ npm install
 1. Backend configuration
    - Create a `config.yml` file in the `backend/app/dataService` directory
    - Update the `config.yml` file with the required configurations:
-     - You can get adobe service api credentials [here](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/)
-     - You can get openai api key [here](https://platform.openai.com/api-keys)
+     - Get Adobe service API credentials [here](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/)
+     - Get OpenAI API key [here](https://platform.openai.com/api-keys)
     ```yaml
     openai_key: your_openai_api_key
 
@@ -60,21 +71,20 @@ npm install
        client_secret: your_adobe_client_secret
     ``` 
 
-## Usage
+## 💻 Usage
 
-### Preprocess documents
+### Preprocess Documents
 1. Place your PDF documents in the `backend/app/dataService/data` directory.
 2. Run the preprocessing script:
    ```bash
    cd backend/app/dataService
    python preprocess.py --pdf_dir data --table_dir data/table --figure_dir data/figure --meta_dir data/meta
    ```  
-    This script will extract tables, figures, and metadata from the PDFs and store them in the respective directories.
+   This script will extract tables, figures, and metadata from the PDFs and store them in the respective directories.
 
 For details, please refer to the [preprocessing documentation](backend/app/dataService/README.md).
 
-
-### Running the web application
+### Running the Web Application
 1. Start the backend server
    ```bash
    cd backend
@@ -88,41 +98,19 @@ For details, please refer to the [preprocessing documentation](backend/app/dataS
    ```
 3. Open your browser and navigate to `http://localhost:8080` to access the SciDaEx interface.
 
-## Contributors
+## 👥 Contributors
+Until 2024-08-06: The project has three contributors, with Xingbo Wang being the leading developer (63 commits, +20,575 lines, wangxbzb@gmail.com), followed by Rui Sheng (14 commits, +166 lines, rshengac@connect.ust.hk) and Winston Tsui (2 commits, +106 lines, wt285@cornell.edu). 
 
-Contributors to the project (development version) are listed below (data as of 2024-08-06):
-<details>
-  <summary><strong>Xingbo Wang</strong>: <a href="mailto:wangxbzb@foxmail.com">wangxbzb@foxmail.com</a></summary>
-  <ul>
-    <li><strong>Total Commits</strong>: 63</li>
-    <li><strong>Total Additions</strong>: 37,992</li>
-    <li><strong>Total Deletions</strong>: 17,417</li>
-  </ul>
-</details>
-
-<details>
-  <summary><strong>Rui Sheng</strong>: <a href="mailto:rshengac@connect.ust.hk">rshengac@connect.ust.hk</a></summary>
-  <ul>
-    <li><strong>Total Commits</strong>: 14</li>
-    <li><strong>Total Additions</strong>: 339</li>
-    <li><strong>Total Deletions</strong>: 173</li>
-  </ul>
-</details>
-
-<details>
-  <summary><strong>Winston Tsui</strong>: <a href="mailto:wt285@cornell.edu">wt285@cornell.edu</a></summary>
-  <ul>
-    <li><strong>Total Commits</strong>: 2</li>
-    <li><strong>Total Additions</strong>: 208</li>
-    <li><strong>Total Deletions</strong>: 102</li>
-  </ul>
-</details>
-
-
-## Contact
-
-[Xingbo Wang](https://andy-xingbowang.com/) - xiw4011@med.cornell.edu
-
+## 📚 Citation
+If you use the repository, please cite the following paper:
+```bibtex 
+@article{wang2024scidasynth,
+  title={SciDaSynth: Interactive Structured Knowledge Extraction and Synthesis from Scientific Literature with Large Language Model},
+  author={Wang, Xingbo and Huey, Samantha L and Sheng, Rui and Mehta, Saurabh and Wang, Fei},
+  journal={arXiv preprint arXiv:2404.13765},
+  year={2024}
+}
+```
 
 
 
