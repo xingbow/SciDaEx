@@ -39,9 +39,12 @@
       
     </el-row>
     <el-row class="tablefilter-row">
-      <!-- <span class='fa-solid fa-minus'></span>:{{recordChecked.normelCount}} -->
-      <i class='fa-solid fa-circle-exclamation' style='color: crimson;'></i>:{{recordChecked.alertCount}}
-      <!-- <span class='fa-solid fa-check' style='color: green;'></span>:{{recordChecked.checkedCount}} -->
+      <i class='fa-solid fa-circle-exclamation' style='color: crimson;'></i>:{{recordChecked.alertCount}}  
+      <!-- add table columns -->
+      <el-input size="mini" placeholder="Add columns" width="100px" style="width: 110px;" v-model="localAddColumns"></el-input>
+      <el-button size="mini">Add columns</el-button>
+      <!-- add button when there are active rows being selected to remove them -->
+      <el-button size="mini" @click="removeFromDB">Delete Rows</el-button>
     </el-row>
     <el-row>
       <div id="qa-table" class="compact" style="font-size: 13px; height: 680px;"></div>
@@ -83,6 +86,7 @@ export default {
       localQaSelectedOpt: this.qaSelectedOpt,
       localQaFilterVal: this.qaFilterVal,
       localrecordChecked: this.recordChecked,
+      localAddColumns: '',
     };
   },
   watch: {

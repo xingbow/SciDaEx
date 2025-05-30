@@ -111,9 +111,7 @@ def summarize_text_openai(texts: List[str], openai_key: str, model_name: str = "
     prompt_text = """You are an assistant tasked with summarizing tables and text. \
     Give a concise summary of the table or text. Table or text chunk: {element} """
     prompt = ChatPromptTemplate.from_template(prompt_text)
-    model = ChatOpenAI(temperature=0, 
-                       model=model_name, 
-                       api_key=openai_key)
+    model = ChatOpenAI(temperature=0, model=model_name, openai_api_key=openai_key)
     summarize_chain = {"element": lambda x: x} | prompt | model | StrOutputParser()
     
     results = []
@@ -859,14 +857,12 @@ def normalize_table_name(figure_name):
 
 def extract_pdf_table_llm_new(pdf_path, model_name, openai_api_key):
     # table structure model
-    structure_model = ChatOpenAI(model=model_name, 
+    structure_model = ChatOpenAI(model_name=model_name, 
                                  temperature=0, 
-                                 api_key = openai_api_key, 
+                                 openai_api_key = openai_api_key, 
                                  model_kwargs={"response_format": { "type": "json_object" }})
     # general model
-    model = ChatOpenAI(model=model_name, 
-                       temperature=0, 
-                       api_key = openai_api_key)
+    model = ChatOpenAI(model_name=model_name, temperature=0, openai_api_key = openai_api_key)
     table_extract_prompt = PromptTemplate(
         template = table_extract_prompt_template,
         input_variables=["page_content"]
@@ -925,9 +921,9 @@ def extract_pdf_table_llm_new(pdf_path, model_name, openai_api_key):
 def extract_pdf_table_llm(pdf_path, model, openai_api_key):
     # function: extract odf tables through llm
     os.environ["OPENAI_API_KEY"] = openai_api_key
-    model = ChatOpenAI(model="gpt-4-1106-preview", 
+    model = ChatOpenAI(model_name="gpt-4-1106-preview", 
                        temperature=0, 
-                       api_key = openai_api_key)
+                       openai_api_key = openai_api_key)
 
     table_extract_prompt = PromptTemplate(
         template = table_extract_prompt_template,
@@ -1109,9 +1105,7 @@ def extract_pdf_meta_information(pdf_path, model, openai_api_key):
     # # ---use pdfminer---
     # print(pdf_path)
     os.environ["OPENAI_API_KEY"] = openai_api_key
-    model = ChatOpenAI(model_name="gpt-3.5-turbo-1106", 
-                       temperature=0, 
-                       api_key = openai_api_key)
+    model = ChatOpenAI(model_name="gpt-3.5-turbo-1106", temperature=0, openai_api_key = openai_api_key)
     paper_content = read_pdf(pdf_path, 2)
     # print("Start metainformation extraction")
     # print(paper_content)

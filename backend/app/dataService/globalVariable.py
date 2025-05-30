@@ -15,62 +15,28 @@ config_path = os.path.join(_current_dir, 'config.yml')
 def load_yaml_config(config_path: str) -> Dict[str, Any]:
     with open(config_path, 'r') as config_file:
         return yaml.safe_load(config_file)
-
-if os.path.exists(config_path):
-    config = load_yaml_config(config_path)
-else:
-    config = {}
+config = load_yaml_config(config_path)
 
 # Extract API keys and credentials from config
-openai_key = config.get('openai_key', None)
-adobe_credentials = config.get('adobe_credentials', {})
-adobe_client_id = adobe_credentials.get('client_id', None)
-adobe_client_secret = adobe_credentials.get('client_secret', None)
+openai_key = config['api_keys']['openai']
+adobe_credentials = config['adobe_credentials']
+adobe_client_id = adobe_credentials['client_id']
+adobe_client_secret = adobe_credentials['client_secret']
 
-# if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
-if not all([openai_key]):
+if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
     raise Exception("One or more API keys or credentials cannot be found or loaded. Please check the config file.")
 
 # Directory paths
-# Set directory paths with config values or defaults
-data_dir = config.get('data_dir', os.path.join(_current_dir, 'data'))
-meta_dir = config.get('meta_dir', os.path.join(data_dir, 'meta'))
-temp_dir = config.get('temp_dir', os.path.join(data_dir, 'temp'))
-table_dir = config.get('table_dir', os.path.join(data_dir, 'table'))
-figure_dir = config.get('figure_dir', os.path.join(data_dir, 'figure'))
-vectorstore_dir = config.get('vectorstore_dir', os.path.join(data_dir, 'vectorstore'))
+data_dir = os.path.join(_current_dir, 'data')
+meta_dir = os.path.join(data_dir, 'meta')
+temp_dir = os.path.join(_current_dir, 'temp')
+table_dir = os.path.join(data_dir, 'table')
+figure_dir = os.path.join(data_dir, 'figure')
+vectorstore_dir = os.path.join(data_dir, 'vectorstore')
 
 # Create directories if they don't exist
 for directory in [data_dir, meta_dir, temp_dir, table_dir, figure_dir, vectorstore_dir]:
     os.makedirs(directory, exist_ok=True)
-
-
-def update_global_variables(**kwargs):
-    """Update global variables with provided values"""
-    global data_dir, figure_dir, table_dir, meta_dir, vectorstore_dir, openai_key
-    
-    # Update each variable if provided in kwargs
-    if 'data_dir' in kwargs:
-        data_dir = kwargs['data_dir']
-        temp_dir = os.path.join(data_dir, 'temp')
-    if 'figure_dir' in kwargs:
-        figure_dir = kwargs['figure_dir']
-    else:
-        figure_dir = os.path.join(data_dir, 'figure')
-    if 'table_dir' in kwargs:
-        table_dir = kwargs['table_dir']
-    else:
-        table_dir = os.path.join(data_dir, 'table')
-    if 'meta_dir' in kwargs:
-        meta_dir = kwargs['meta_dir']
-    else:
-        meta_dir = os.path.join(data_dir, 'meta')
-    if 'vectorstore_dir' in kwargs:
-        vectorstore_dir = kwargs['vectorstore_dir']
-    else:
-        vectorstore_dir = os.path.join(data_dir, 'vectorstore')
-    if 'openai_key' in kwargs:
-        openai_key = kwargs['openai_key']
 
 # ##############################
 # prompts

@@ -2,8 +2,8 @@
 
   <el-row>
     <el-col>
-      <div>
-        <el-tabs v-model="localActivePDFName" type="card">
+      <div style="margin-top:-15px;">
+        <el-tabs v-model="localActivePDFName" closable>
           <el-tab-pane v-for="(tab, index) in paperInfoList" :label="tab" :name="tab" :key="index"></el-tab-pane>
         </el-tabs>
         <div style="width: 100%; height: 750px; overflow: scroll;" v-show="paperInfoList.includes(localActivePDFName)">

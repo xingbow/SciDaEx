@@ -1,13 +1,13 @@
-# SciDaEx Backend Routes
-This folder contains the routing functions for the SciDaEx (Scientific Data Extractor) backend application.
+# SciDaSynth Backend Routes
+This folder contains the routing functions for the SciDaSynth backend application.
 
 ## Files
 
-- `api.py`: The main API routing file that defines the endpoints for the SciDaEx backend.
+- `api.py`: The main API routing file that defines the endpoints for the SciDaSynth backend.
 
 ## Overview
 
-The `api.py` file sets up a Flask Blueprint named `api` and defines various routes for handling different functionalities of the SciDaEx application. These routes include:
+The `api.py` file sets up a Flask Blueprint named `api` and defines various routes for handling different functionalities of the SciDaSynth application. These routes include:
 
 - File upload and retrieval
 - PDF metadata extraction

@@ -1,45 +1,42 @@
-# SciDaEx: Scientific Data Extraction and Structuring System
+# SciDaSynth: Interactive Structured Data Extraction from Scientific Literature with Large Language Model (Original Version)
 
-<div align="center">
-  <img src="scidaex_system.png" alt="SciDaEx Logo"/>
-  
-  [![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
+![SciDaSynth Logo](scidaex_system.png)
+
+SciDaSynth is a open-source system for extracting and structuring data (as data tables) from scientific literature using Large Language Models (LLMs). It integrates a computational backend with an interactive user interface to facilitate efficient data extraction, structuring, and refinement for evidence synthesis in scientific research.
+
+<span style="color: #8B0000">**Note**: This is the source code for the ssytem implementation in our [research paper](https://arxiv.org/abs/2404.13765).</span>
+
+[![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
   [![arXiv](https://img.shields.io/badge/arXiv-2404.13765-b31b1b.svg)](https://arxiv.org/abs/2404.13765)
-</div>
 
-> An open-source system for extracting and structuring data from scientific literature using Large Language Models (LLMs). It integrates a computational backend with an interactive user interface to facilitate efficient data extraction, structuring, and refinement for evidence synthesis in scientific research.
 
-> **Note:** This repository contains two main branches:
-> - `main`: The latest version optimized for customization and extension
-> - `scidasynth`: The original version as described in our research paper
+## Table of Contents
 
-## 📞 Contact
-**Xingbo Wang** - [Website](https://andy-xingbowang.com/) | [Email](mailto:wangxbzb@gmail.com)
-
-## 📋 Table of Contents
-- [SciDaEx: Scientific Data Extraction and Structuring System](#scidaex-scientific-data-extraction-and-structuring-system)
-  - [📞 Contact](#-contact)
-  - [📋 Table of Contents](#-table-of-contents)
-  - [✨ Features](#-features)
-  - [🚀 Installation](#-installation)
+- [SciDaSynth: Interactive Structured Data Extraction from Scientific Literature with Large Language Model (Original Version)](#scidasynth-interactive-structured-data-extraction-from-scientific-literature-with-large-language-model-original-version)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
     - [Configuration](#configuration)
-  - [💻 Usage](#-usage)
-    - [Preprocess Documents](#preprocess-documents)
-    - [Running the Web Application](#running-the-web-application)
+  - [Usage](#usage)
+    - [Preprocess documents](#preprocess-documents)
+    - [Running the web application](#running-the-web-application)
   - [👥 Contributors](#-contributors)
     - [Project Timeline](#project-timeline)
   - [📚 Citation](#-citation)
+  - [Contact](#contact)
 
-## ✨ Features
-- 🔍 Automated data extraction from scientific papers (text, tables, and figures)
-- 📊 Structured data table output in standardized formats
-- 🖥️ Interactive user interface for data validation and refinement
-- 🚀 Retrieval-augmented generation (RAG) for enhanced accuracy and speed
-- 📈 Quality evaluation metrics for extracted data
-- 👥 Support for both technical and non-technical users
+## Features
 
-## 🚀 Installation
+- Automated data extraction from scientific papers (text, tables, and figures)
+- Structured data table output in standardized formats
+- Interactive user interface for data validation and refinement
+- Retrieval-augmented generation (RAG) for enhanced accuracy and speed
+- Quality evaluation metrics for extracted data
+- Support for both technical and non-technical users
+
+
+## Installation
 
 ```bash
 # Clone the repository
@@ -62,30 +59,32 @@ npm install
 1. Backend configuration
    - Create a `config.yml` file in the `backend/app/dataService` directory
    - Update the `config.yml` file with the required configurations:
-     - Get Adobe service API credentials [here](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/)
-     - Get OpenAI API key [here](https://platform.openai.com/api-keys)
+     - You can get adobe service api credentials [here](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/)
+     - You can get openai api key [here](https://platform.openai.com/api-keys)
     ```yaml
-    openai_key: your_openai_api_key
+    api_keys:
+       openai: your_openai_api_key
 
     adobe_credentials:
        client_id: your_adobe_client_id
        client_secret: your_adobe_client_secret
     ``` 
 
-## 💻 Usage
+## Usage
 
-### Preprocess Documents
+### Preprocess documents
 1. Place your PDF documents in the `backend/app/dataService/data` directory.
 2. Run the preprocessing script:
    ```bash
    cd backend/app/dataService
    python preprocess.py --pdf_dir data --table_dir data/table --figure_dir data/figure --meta_dir data/meta
    ```  
-   This script will extract tables, figures, and metadata from the PDFs and store them in the respective directories.
+    This script will extract tables, figures, and metadata from the PDFs and store them in the respective directories.
 
 For details, please refer to the [preprocessing documentation](backend/app/dataService/README.md).
 
-### Running the Web Application
+
+### Running the web application
 1. Start the backend server
    ```bash
    cd backend
@@ -110,7 +109,6 @@ For details, please refer to the [preprocessing documentation](backend/app/dataS
 | Until 2024-08-06 | Contributor | [Rui Sheng](mailto:rshengac@connect.ust.hk) | 14 commits, +166 lines |
 | Until 2024-08-06 | Contributor | [Winston Tsui](mailto:wt285@cornell.edu) | 2 commits, +106 lines |
 
-
 ## 📚 Citation
 If you use the repository, please cite the following paper:
 ```bibtex 
@@ -121,6 +119,12 @@ If you use the repository, please cite the following paper:
   year={2024}
 }
 ```
+
+
+## Contact
+
+[Xingbo Wang](https://andy-xingbowang.com/) - wangxbzb@gmail.com
+
 
 
 

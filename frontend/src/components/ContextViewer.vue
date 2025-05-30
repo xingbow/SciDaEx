@@ -16,7 +16,7 @@
           @current-change="handlePageChange"
         >
         </el-pagination>
-        <div class="open-paper-btn">
+        <div class="top-right-buttons">
           <el-button type="text" >Open paper</el-button>
           <el-button size="mini" style="padding: 0px !important;" @click="closeContxt"><i class="el-icon-close"></i></el-button>
         </div>
@@ -172,5 +172,16 @@ export default {
 }
 .highlight {
   background-color: #ff0;
+}
+
+.top-right-buttons {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  display: flex;
+  align-items: center;
+}
+.top-right-buttons .el-button {
+  margin-left: 8px;
 }
 </style>

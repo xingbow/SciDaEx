@@ -186,7 +186,7 @@ class DataService(object):
 
         model = ChatOpenAI(temperature=0, 
                             model="gpt-4o-mini",
-                            api_key = GV.openai_key,
+                            openai_api_key = GV.openai_key,
                             model_kwargs={
                                 # "seed": 42,
                                 "response_format": { "type": "json_object" }
@@ -236,9 +236,7 @@ class DataService(object):
         {answer}
         """
         summary_prompt = ChatPromptTemplate.from_template(summary_template)
-        summary_model = ChatOpenAI(temperature=0, 
-                                   model="gpt-3.5-turbo-1106", 
-                                   api_key = GV.openai_key)
+        summary_model = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-1106", openai_api_key = GV.openai_key)
         rag_summary_chain = summary_prompt | summary_model | StrOutputParser()
         rag_sum_text = utils.cut_string_to_token_length(str([str(r["answer"]) for r in list(results.values())]))
         
@@ -435,10 +433,6 @@ if __name__ == "__main__":
 
     question = """
     What the tasks and accuracy of different LMs?
-    """
-
-    question = """
-    What are the eligibility criteria for the Sepsis trial study?
     """
 
     #******************** running **********************

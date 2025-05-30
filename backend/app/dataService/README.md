@@ -1,6 +1,6 @@
 # SciDaEx Data Service
 
-This folder contains the core data processing and extraction functionalities for the SciDaEx (Scientific Data Extraction) project. These modules work together to process scientific papers, extract relevant information, and provide a question-answering capability.
+This folder contains the core data processing and extraction functionalities for the SciDaSynth (Scientific Data Extraction) project. These modules work together to process scientific papers, extract relevant information, and provide a question-answering capability.
 
 ## Key Features
 
@@ -19,7 +19,8 @@ This folder contains the core data processing and extraction functionalities for
 1. Ensure all required libraries are installed (see requirements.txt in the parent directory).
 2. Create a `config.yml` file in this directory with the following structure:
    ```yaml
-   openai_key: your_openai_key_here
+   api_keys:
+     openai: your_openai_key_here
 
    adobe_credentials:
      client_id: your_adobe_client_id_here

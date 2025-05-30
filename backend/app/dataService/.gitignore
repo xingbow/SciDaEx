@@ -1,3 +1,4 @@
+*.json
 config.yml
 data
 temp

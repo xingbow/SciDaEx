@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# from app import app
 from app.routes.app import create_app
 from gevent.pywsgi import WSGIServer
 from app.dataService import globalVariable as GV

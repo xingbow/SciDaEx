@@ -1,4 +1,4 @@
-# SciDaEx Backend
+# SciDaSynth Backend
 
 This is the backend component of the SciDaEx (Scientific Data Extractor) project. It provides a Flask-based API for processing scientific papers, extracting metadata, tables, and figures, and performing various analysis tasks.
 
@@ -21,7 +21,6 @@ SciDaEx/backend/
 └── run-data-backend.py
 ```
 
-## Key Components
 
 - `app.py`: The main Flask application setup.
 - `routes/api.py`: Defines the API endpoints.

@@ -4,7 +4,7 @@
       <el-col :span="sidebarSpan" style="position: relative; ">
         <el-header style="height: 50px !important;">
           <div class="header-web">
-            SciDaEx
+            SciDaSynth
           </div>
         </el-header>
 
@@ -95,8 +95,22 @@
           </el-col>
           <!-- PDF viewer -->
           <el-col :span="12">
-            <paper-viewer :activePDFName.sync="activePDFName" :paperInfoList="paperInfoList" :tableLists="tableLists"
-              :figLists="figLists" :metaInfo="metaInfo" :selectedFile="selectedFile" />
+            <el-tabs v-model="activeRightTabName" type="card">
+              <el-tab-pane label="PDF Viewer" name="pdfViewer">
+                <paper-viewer :activePDFName.sync="activePDFName" :paperInfoList="paperInfoList"
+                  :tableLists="tableLists" :figLists="figLists" :metaInfo="metaInfo" :selectedFile="selectedFile" />
+              </el-tab-pane>
+              <el-tab-pane label="Data Standardization" name="dataStandardization">
+                <enhanced-grouping-interface 
+                :column-statistics="columnStatistics"
+                :qa-table-data="qa_tableData"
+                :dimensions="groupedDimensions" 
+                @update-grouped-dimensions="updateGroupedDimensions"
+                @standardize="handleStandardize"
+                @view-in-table="handleViewInTable" />
+              </el-tab-pane>
+            </el-tabs>
+
           </el-col>
 
         </el-row>
@@ -146,6 +160,7 @@ import DbTab from './components/DbTab';
 import PaperViewer from './components/PaperViewer';
 import ContextViewer from './components/ContextViewer';
 import AddAdditionalColumns from './components/AddAdditionalColumns';
+import EnhancedGroupingInterface from './components/EnhancedGroupingInterface.vue';
 
 // NLP processing toolkit (wink-tokenizer & stopword removal)
 const { removeStopwords } = require('stopword')
@@ -160,7 +175,8 @@ export default {
     DbTab,
     PaperViewer,
     ContextViewer,
-    AddAdditionalColumns
+    AddAdditionalColumns,
+    EnhancedGroupingInterface
   },
   data() {
     return {
@@ -260,7 +276,7 @@ export default {
       dbTableExpanded: false,
       qaTableExpanded: false,
 
-      scatterPlotLoading: false,
+      activeRightTabName: 'pdfViewer',
 
       // login form
       dialogFormVisible: false,
@@ -282,9 +298,31 @@ export default {
         normelCount: 0,
         checkedCount: 0,
       },
+
+      // semantic grouping
+      groupedDimensions: [],
+      selectedColumns: [],
     }
   },
   computed: {
+    columnStatistics() {
+      if (!this.qa_tableData.length) return [];
+
+      const columns = Object.keys(this.qa_tableData[0]).filter(key => key !== 'pdf_file');
+      return columns.map(column => {
+        const values = this.qa_tableData.map(row => row[column]);
+        const uniqueValues = new Set(values);
+        const totalValues = values.length;
+        const inconsistency = (uniqueValues.size / totalValues * 100).toFixed(2);
+
+        return {
+          name: column,
+          dataType: this.inferDataType(values),
+          inconsistency: inconsistency,
+          uniqueValues: uniqueValues.size,
+        };
+      });
+    },
     currentContext() {
       return {
         "context": this.contexts[this.currentPage - 1],
@@ -445,12 +483,85 @@ export default {
           });
         })
       })
-
     },
+    // qa_tableData: {
+    //   handler() {
+    //     this.prepareGroupedData();
+    //   },
+    //   deep: true
+    // },
   },
   methods: {
+    // handle view grouped dimensions in data standardization
+    handleViewInTable(dimensionName, labelsToFilter) {
+      console.log("handleViewInTable", dimensionName, labelsToFilter);
+      if (this.qaTable) {
+        this.qaTable.clearFilter();
+        this.qaTable.setFilter(dimensionName, "in", labelsToFilter);
+
+        // Switch to the Current Result tab
+        this.activeTabName = 'qa';
+
+        // Record user interaction
+        this.userInteractions.table_interactions.push({
+          "time": new Date().getTime(),
+          "type": "filter_from_grouping",
+          "view": "current_results",
+          "target": "tablecell",
+          "dimension": dimensionName,
+          "labelsFiltered": labelsToFilter
+        });
+      }
+    },
+    // prepare grouped dimensioned data:
+    async prepareGroupedData() {
+      try {
+        const response = await fetch('http://localhost:5010/api/prepare_grouped_data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            qa_table_data: this.qa_tableData, 
+            selected_columns: this.selectedColumns 
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('===Grouped data:===', data);
+        this.groupedDimensions = data.groupedDimensions;
+      } catch (error) {
+        console.error('Error preparing grouped data:', error);
+      }
+    },
+    updateGroupedDimensions(newDimensions) {
+      this.groupedDimensions = newDimensions;
+    },
+    updateSelectedColumns(columns) {
+      this.selectedColumns = columns;
+      this.prepareGroupedData();
+    },
+    inferDataType(values) {
+      const sample = values.find(value => value !== null && value !== undefined);
+      if (sample === undefined) return 'Unknown';
+      if (typeof sample === 'number') return 'Number';
+      if (typeof sample === 'boolean') return 'Boolean';
+      if (typeof sample === 'string') {
+        // You can add more specific string type checks here if needed
+        // For example, date detection, etc.
+        return 'String';
+      }
+      return 'Other';
+    },
     beforeUpload() {
       return false; // Prevent auto-upload
+    },
+    handleStandardize(dimension, group) {
+      console.log("===handleStandardize===", dimension, group);
     },
     loadFiles() {
       service.getFiles((files) => {
@@ -662,11 +773,13 @@ export default {
                     })
                   }
                 },
+                { separator: true },
                 {
                   label: "Open paper",
                   action: function (_e, row) {
                     let cell = row.getCells()[0];
                     _this.handleTableRightClickMenuOptions(cell);
+                    _this.activeRightTabName = "pdfViewer"
                     _this.activePDFName = "PDF"
                   }
                 },
@@ -678,6 +791,7 @@ export default {
                     if (!_this.paperInfoList.includes("Table")) {
                       _this.paperInfoList.push("Table")
                     }
+                    _this.activeRightTabName = "pdfViewer"
                     _this.activePDFName = "Table"
                   }
                 },
@@ -689,6 +803,7 @@ export default {
                     if (!_this.paperInfoList.includes("Figure")) {
                       _this.paperInfoList.push("Figure")
                     }
+                    _this.activeRightTabName = "pdfViewer"
                     _this.activePDFName = "Figure"
                   }
                 },
@@ -700,13 +815,15 @@ export default {
                     if (!_this.paperInfoList.includes("Meta")) {
                       _this.paperInfoList.push("Meta")
                     }
+                    _this.activeRightTabName = "pdfViewer"
                     _this.activePDFName = "Meta"
                   }
                 },
+                { separator: true },
                 {
                   label: "Add row",
-                  action: function (_e, row){
-                    _this.qaTable.addRow({}, true , row);
+                  action: function (_e, row) {
+                    _this.qaTable.addRow({}, true, row);
                   }
                 }
               ],
@@ -851,8 +968,9 @@ export default {
             });
             _this.activeTabName = "qa";
 
-            // listen to column title change & set fields for DIMENSION exploration 
-            //_this.watchTableFunc("qa");
+            // update data standardization
+            this.prepareGroupedData();
+
           })
           this.userinput = "";
         } else {
@@ -1076,7 +1194,7 @@ export default {
   },
   mounted() {
     const _this = this;
-    this.loadFiles();
+    // this.loadFiles();
 
     // pdf table
     this.pdfTable = new Tabulator("#pdf-table", {
@@ -1438,4 +1556,33 @@ input[type="text"]:focus {
 .highlight {
   background-color: #ff0;
 }
+
+.el-progress__text {
+  font-size: 12px !important;
+}
+
+/* Style for the context menu */
+.tabulator-menu {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Style for menu items */
+.tabulator-menu .tabulator-menu-item {
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* Hover effect for menu items */
+.tabulator-menu .tabulator-menu-item:hover {
+  background-color: #e8e8e8;
+}
+
+/* Style for separators */
+.tabulator-menu .tabulator-menu-separator {
+  border-top: 1px solid #ddd;
+  margin: 5px 0;
+}
+
 </style>
