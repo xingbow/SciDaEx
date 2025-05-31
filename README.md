@@ -4,7 +4,7 @@
 
 SciDaSynth is a open-source system for extracting and structuring data (as data tables) from scientific literature using Large Language Models (LLMs). It integrates a computational backend with an interactive user interface to facilitate efficient data extraction, structuring, and refinement for evidence synthesis in scientific research.
 
-<span style="color: #8B0000">**Note**: This is the source code for the ssytem implementation in our [research paper](https://arxiv.org/abs/2404.13765).</span>
+<div style="color: #8B0000">**Note**: This is the source code for the system implementation in our [research paper](https://arxiv.org/abs/2404.13765).</div>
 
 [![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
