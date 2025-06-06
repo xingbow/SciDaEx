@@ -1,6 +1,6 @@
 deepeval==0.21.74
 Flask==3.0.3
-flask_cors==4.0.1
+flask_cors==6.0.0
 gevent==24.2.1
 numpy
 pandas
