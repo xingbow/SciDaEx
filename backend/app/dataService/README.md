@@ -17,16 +17,22 @@ This folder contains the core data processing and extraction functionalities for
 ## Setup
 
 1. Ensure all required libraries are installed (see requirements.txt in the parent directory).
-2. Create a `config.yml` file in this directory with the following structure:
-   ```yaml
-   openai_key: your_openai_key_here
+2. Create a `.env` file in the backend directory by copying from `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+3. Update the `.env` file with your actual API keys and credentials:
+   ```env
+   # OpenAI Configuration
+   OPENAI_API_KEY=your_openai_api_key_here
 
-   adobe_credentials:
-     client_id: your_adobe_client_id_here
-     client_secret: your_adobe_client_secret_here
-    ```
-   - Replace the placeholder values in `config.yml` with your actual API keys and credentials.
-      - [Adobe credentials](https://acrobatservices.adobe.com/dc-integration-creation-app-cdn/main.html?api=pdf-services-api)
+   # Adobe Credentials
+   ADOBE_CLIENT_ID=your_adobe_client_id_here
+   ADOBE_CLIENT_SECRET=your_adobe_client_secret_here
+   ```
+   - Replace the placeholder values with your actual API keys and credentials.
+   - [Adobe credentials](https://acrobatservices.adobe.com/dc-integration-creation-app-cdn/main.html?api=pdf-services-api)
+   - Optional: You can also configure directory paths and model settings in the `.env` file.
 
 ## Usage
 
