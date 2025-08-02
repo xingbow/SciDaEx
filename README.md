@@ -60,17 +60,21 @@ npm install
 
 ### Configuration
 1. Backend configuration
-   - Create a `config.yml` file in the `backend/app/dataService` directory
-   - Update the `config.yml` file with the required configurations:
+   - Create a `.env` file in the `backend/app/dataService` directory by copying from `.env.example`:
+     ```bash
+     cp backend/app/dataService/.env.example backend/app/dataService/.env
+     ```
+   - Update the `.env` file with the required configurations:
      - Get Adobe service API credentials [here](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/)
      - Get OpenAI API key [here](https://platform.openai.com/api-keys)
-    ```yaml
-    openai_key: your_openai_api_key
+    ```env
+    # OpenAI Configuration
+    OPENAI_API_KEY=your_openai_api_key_here
 
-    adobe_credentials:
-       client_id: your_adobe_client_id
-       client_secret: your_adobe_client_secret
-    ``` 
+    # Adobe Credentials
+    ADOBE_CLIENT_ID=your_adobe_client_id_here
+    ADOBE_CLIENT_SECRET=your_adobe_client_secret_here
+         ``` 
 
 ## 💻 Usage
 

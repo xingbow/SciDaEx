@@ -3,7 +3,11 @@ import pickle
 import json
 import time
 import re
-import yaml
+import warnings
+
+# Suppress NNPACK warnings on macOS
+os.environ['NNPACK_DISABLE'] = '1'
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="smashed")
 try:
     import globalVariable as GV
     import utils as utils
@@ -93,23 +97,39 @@ def process_one_pdf_papermage(pdf_path, table_path, figure_path, flag='all'):
 
     if flag in ['all', 'table']:
         # --- load the table
-        table_data = json.load(open(table_path))
-        tables = []
-        for table in table_data:
-            table_text = f"""{table["table_name"]}: {table["table_caption"]}; table content: {table["table_content"]}
-            """
-            tables.append(table_text)
-        all_text += tables
+        if os.path.exists(table_path):
+            try:
+                with open(table_path, 'r') as f:
+                    table_data = json.load(f)
+                tables = []
+                for table in table_data:
+                    if isinstance(table, dict) and "table_name" in table and "table_caption" in table and "table_content" in table:
+                        table_text = f"""{table["table_name"]}: {table["table_caption"]}; table content: {table["table_content"]}
+                        """
+                        tables.append(table_text)
+                all_text += tables
+            except (json.JSONDecodeError, FileNotFoundError, KeyError) as e:
+                print(f"Error loading table data from {table_path}: {e}")
+        else:
+            print(f"Table file not found: {table_path}")
     
     if flag in ['all', 'figure']:
         # --- load the figure
-        figure_data = json.load(open(figure_path))
-        figures = []
-        for figure in figure_data:
-            figure_text = f"""{figure["figure_name"]}: {figure["figure_caption"]}; figure content: {figure["figure_content"]}
-            """
-            figures.append(figure_text)
-        all_text += figures
+        if os.path.exists(figure_path):
+            try:
+                with open(figure_path, 'r') as f:
+                    figure_data = json.load(f)
+                figures = []
+                for figure in figure_data:
+                    if isinstance(figure, dict) and "figure_name" in figure and "figure_caption" in figure and "figure_content" in figure:
+                        figure_text = f"""{figure["figure_name"]}: {figure["figure_caption"]}; figure content: {figure["figure_content"]}
+                        """
+                        figures.append(figure_text)
+                all_text += figures
+            except (json.JSONDecodeError, FileNotFoundError, KeyError) as e:
+                print(f"Error loading figure data from {figure_path}: {e}")
+        else:
+            print(f"Figure file not found: {figure_path}")
     
     return all_text
 
@@ -214,23 +234,39 @@ def process_one_pdf(pdf_path, table_path, figure_path, flag='all'):
 
     if flag in ['all', 'table']:
         # Load table
-        table_data = json.load(open(table_path))
-        tables = []
-        for table in table_data:
-            table_text = f"""{table["table_name"]}: {table["table_caption"]}; table content: {table["table_content"]}
-            """
-            tables.append(table_text)
-        all_text += tables
+        if os.path.exists(table_path):
+            try:
+                with open(table_path, 'r') as f:
+                    table_data = json.load(f)
+                tables = []
+                for table in table_data:
+                    if isinstance(table, dict) and "table_name" in table and "table_caption" in table and "table_content" in table:
+                        table_text = f"""{table["table_name"]}: {table["table_caption"]}; table content: {table["table_content"]}
+                        """
+                        tables.append(table_text)
+                all_text += tables
+            except (json.JSONDecodeError, FileNotFoundError, KeyError) as e:
+                print(f"Error loading table data from {table_path}: {e}")
+        else:
+            print(f"Table file not found: {table_path}")
     
     if flag in ['all', 'figure']:
         # Load the figure
-        figure_data = json.load(open(figure_path))
-        figures = []
-        for figure in figure_data:
-            figure_text = f"""{figure["figure_name"]}: {figure["figure_caption"]}; figure content: {figure["figure_content"]}
-            """
-            figures.append(figure_text)
-        all_text += figures
+        if os.path.exists(figure_path):
+            try:
+                with open(figure_path, 'r') as f:
+                    figure_data = json.load(f)
+                figures = []
+                for figure in figure_data:
+                    if isinstance(figure, dict) and "figure_name" in figure and "figure_caption" in figure and "figure_content" in figure:
+                        figure_text = f"""{figure["figure_name"]}: {figure["figure_caption"]}; figure content: {figure["figure_content"]}
+                        """
+                        figures.append(figure_text)
+                all_text += figures
+            except (json.JSONDecodeError, FileNotFoundError, KeyError) as e:
+                print(f"Error loading figure data from {figure_path}: {e}")
+        else:
+            print(f"Figure file not found: {figure_path}")
     print("all text: ", all_text)
     print("*"*20)
     return all_text
@@ -377,34 +413,6 @@ if __name__ == "__main__":
 
     # Add after parsing arguments:
     update_global_vars(args)
-
-    # add configration saving
-    config_path = "config.yml"
-    config = {
-        'data_dir': args.pdf_dir,
-        'figure_dir': args.figure_dir,
-        'table_dir': args.table_dir,
-        'meta_dir': args.meta_dir,
-        'table_model': args.table_model,
-        'figure_model': args.figure_model,
-        'meta_model': args.meta_model,
-        'mode': mode,
-        'openai_key': args.openai_key,
-        'vectorstore_dir': args.vectorstore_dir,
-        'flag': args.flag
-    }
-
-    # create or update the config file
-    try:
-        with open(config_path, 'r') as f:
-            existing_config = yaml.safe_load(f) or {}
-        existing_config.update(config)
-        config = existing_config
-    except FileNotFoundError:
-        pass
-
-    with open(config_path, 'w') as f:
-        yaml.dump(config, f, default_flow_style=False)
     
     if args.pdf_path:
         preprocess_single_pdf(

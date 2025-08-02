@@ -13,6 +13,7 @@ pdfminer==20191125
 Pillow==10.4.0
 PyPDF2==3.0.1
 PyYAML==6.0.1
+python-dotenv==1.1.1
 Requests==2.32.3
 scikit_learn==1.5.1
 tiktoken==0.7.0

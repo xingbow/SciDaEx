@@ -1,3 +1,7 @@
+tmp
+deepeval-cache.json
+test_*
+exp*
 config.yml
 data
 temp

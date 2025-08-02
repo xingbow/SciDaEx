@@ -2,43 +2,42 @@
 # Global variables
 # ##############################
 import os
-import os
-import yaml
 from typing import Dict, Any
+from dotenv import load_dotenv
 
-backend_port = 5010
+# Load environment variables from .env file, overriding existing ones
+load_dotenv(override=True)
 
+# Load environment variables from .env file
 _current_dir = os.path.dirname(os.path.abspath(__file__))
+backend_dir = os.path.dirname(os.path.dirname(_current_dir))  # Go up to backend directory
+env_path = os.path.join(backend_dir, '.env')
 
-# Load configuration
-config_path = os.path.join(_current_dir, 'config.yml')
-def load_yaml_config(config_path: str) -> Dict[str, Any]:
-    with open(config_path, 'r') as config_file:
-        return yaml.safe_load(config_file)
+# Backend configuration
+backend_port = int(os.getenv('BACKEND_PORT', 5010))
 
-if os.path.exists(config_path):
-    config = load_yaml_config(config_path)
-else:
-    config = {}
+# Extract API keys and credentials from environment variables
+openai_key = os.getenv('OPENAI_API_KEY')
+adobe_client_id = os.getenv('ADOBE_CLIENT_ID')
+adobe_client_secret = os.getenv('ADOBE_CLIENT_SECRET')
 
-# Extract API keys and credentials from config
-openai_key = config.get('openai_key', None)
-adobe_credentials = config.get('adobe_credentials', {})
-adobe_client_id = adobe_credentials.get('client_id', None)
-adobe_client_secret = adobe_credentials.get('client_secret', None)
-
-# if not all([openai_key, adobe_client_id, adobe_client_id, adobe_client_secret]):
-if not all([openai_key]):
-    raise Exception("One or more API keys or credentials cannot be found or loaded. Please check the config file.")
+# Check for required API keys
+if not openai_key:
+    raise Exception("OPENAI_API_KEY environment variable is required. Please check your .env file.")
+if not adobe_client_id:
+    raise Exception("ADOBE_CLIENT_ID environment variable is required. Please check your .env file.")
+if not adobe_client_secret:
+    raise Exception("ADOBE_CLIENT_SECRET environment variable is required. Please check your .env file.")
 
 # Directory paths
-# Set directory paths with config values or defaults
-data_dir = config.get('data_dir', os.path.join(_current_dir, 'data'))
-meta_dir = config.get('meta_dir', os.path.join(data_dir, 'meta'))
-temp_dir = config.get('temp_dir', os.path.join(data_dir, 'temp'))
-table_dir = config.get('table_dir', os.path.join(data_dir, 'table'))
-figure_dir = config.get('figure_dir', os.path.join(data_dir, 'figure'))
-vectorstore_dir = config.get('vectorstore_dir', os.path.join(data_dir, 'vectorstore'))
+# Set directory paths with environment variables or defaults
+data_dir = os.getenv('DATA_DIR', os.path.join(_current_dir, 'data'))
+meta_dir = os.getenv('META_DIR', os.path.join(data_dir, 'meta'))
+temp_dir = os.getenv('TEMP_DIR', os.path.join(data_dir, 'temp'))
+table_dir = os.getenv('TABLE_DIR', os.path.join(data_dir, 'table'))
+figure_dir = os.getenv('FIGURE_DIR', os.path.join(data_dir, 'figure'))
+vectorstore_dir = os.getenv('VECTORSTORE_DIR', os.path.join(data_dir, 'vectorstore'))
+
 
 # Create directories if they don't exist
 for directory in [data_dir, meta_dir, temp_dir, table_dir, figure_dir, vectorstore_dir]:
@@ -47,7 +46,7 @@ for directory in [data_dir, meta_dir, temp_dir, table_dir, figure_dir, vectorsto
 
 def update_global_variables(**kwargs):
     """Update global variables with provided values"""
-    global data_dir, figure_dir, table_dir, meta_dir, vectorstore_dir, openai_key
+    global data_dir, figure_dir, table_dir, meta_dir, vectorstore_dir, openai_key, temp_dir
     
     # Update each variable if provided in kwargs
     if 'data_dir' in kwargs:
